@@ -44,7 +44,7 @@ const Signup = () => {
         handleSuccess(message);
         setTimeout(() => {
          // navigate("http://localhost:3001/");//carefully check the path
-          window.location.href = "http://localhost:3001/"
+          window.location.href = "https://main.d38s2fcfxs6cko.amplifyapp.com/"
         }, 1000);
       } else {
         handleError(message);
