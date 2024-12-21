@@ -43,7 +43,7 @@ const Login = () => {
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-            window.location.href = "https://main.d38s2fcfxs6cko.amplifyapp.com/"; // Redirect to the external URL
+            window.location.href = "http://localhost:3001/"; 
         //  navigate("/");
         //   The navigate function from react-router-dom is designed for routing within the same React application and does not support navigating to a different port or domain.
 
