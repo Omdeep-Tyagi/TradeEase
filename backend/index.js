@@ -24,7 +24,7 @@ const swaggerDocument = require('./swagger-output.json');
 //   credentials: true, // Allow cookies or other credentials
 // };
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+const allowedOrigins = ['https://endearing-starlight-c25049.netlify.app', 'https://comfy-khapse-9901c9.netlify.app'];
 
 const corsOptions = {
   origin: (origin, callback) => {
