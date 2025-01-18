@@ -14,7 +14,7 @@ const BuyActionWindow = ({ uid }) => {
 // uid is name and mode is buy here 
 
   const handleBuyClick = () => {
-    axios.post("http://localhost:3002/newOrder", {
+    axios.post("https://tradeease.onrender.com/newOrder", {
       name: uid,
       qty: stockQuantity,
       price: stockPrice,

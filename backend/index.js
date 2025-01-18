@@ -20,33 +20,37 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
 
 // const corsOptions = {
-//   origin: 'http://localhost:3000', // Allow requests from this origin
+//   origin: '', // Allow requests from this origin
 //   credentials: true, // Allow cookies or other credentials
 // };
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+// const allowedOrigins = ['https://endearing-starlight-c25049.netlify.app', 'https://comfy-khapse-9901c9.netlify.app'];
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, // Allow credentials (cookies, headers)
-};
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     if (allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true, // Allow credentials (cookies, headers)
+// };
 
-
-//If you’re in development and want to temporarily allow all origins:
-// app.use(cors({
-//   origin: '*', // Note: Do not use '*' if withCredentials: true
-//   credentials: true,
-// }));
 
 const app = express();// use to create the server
 
-app.use(cors(corsOptions));//If your frontend application is running on http://localhost:3000 and your backend API is running on http://localhost:5000, you need to enable CORS on your backend to allow the frontend to make requests to the backend.
+// app.use(cors({ origin: "*" }));//not able to use it here . WHY??//
+// The CORS error you're encountering is because you're trying to send a request with credentials (cookies, authorization headers, etc.), but the server is responding with Access-Control-Allow-Origin: *. When credentials are included, the wildcard (*) cannot be used.
+// origin: "http://localhost:3000": This explicitly allows only your frontend to make requests.
+// credentials: true: This ensures that cookies and authorization headers are passed during requests.
+// Wildcard Issue: By setting a specific origin, the CORS error related to * is resolved.
+
+//app.use(cors(corsOptions));//If your frontend application is running on http://localhost:3000 and your backend API is running on http://localhost:5000, you need to enable CORS on your backend to allow the frontend to make requests to the backend.
+app.use(cors({
+  origin: ["https://comfy-khapse-9901c9.netlify.app", "https://endearing-starlight-c25049.netlify.app"], // List your frontend domains
+  credentials: true, // Allow sending cookies with requests
+}));
 app.use(cookieParser());//The cookie-parser manages cookie-based sessions or extracts data from cookies
 app.use(bodyParser.json());
 

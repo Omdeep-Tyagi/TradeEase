@@ -12,9 +12,12 @@ module.exports.Signup = async (req, res, next) => {
     const user = await User.create({ email, password, username, createdAt });
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
-      withCredentials: true,
-      httpOnly: false,
-    });
+        httpOnly: true, // Prevent access from JavaScript
+        secure: true, // Ensure the cookie is only sent over HTTPS
+        sameSite: "None", // Allow cross-origin cookies
+        path: "/", // Makes the cookie accessible for all routes on the domain
+        maxAge: 7 * 24 * 60 * 60 * 1000, // Set the cookie to expire in 7 days
+      });
     res
       .status(201)
       .json({ message: "User signed in successfully", success: true, user });
@@ -41,9 +44,12 @@ module.exports.Login = async (req, res, next) => {
       }
        const token = createSecretToken(user._id);
        res.cookie("token", token, {
-         withCredentials: true,
-         httpOnly: false,
-       });
+        httpOnly: true, // Prevent access from JavaScript
+        secure: true, // Ensure the cookie is only sent over HTTPS
+        sameSite: "None", // Allow cross-origin cookies
+        path: "/", // Makes the cookie accessible for all routes on the domain
+        maxAge: 7 * 24 * 60 * 60 * 1000, // Set the cookie to expire in 7 days
+      });
        res.status(201).json({ message: "User logged in successfully", success: true });
        next()
     } catch (error) {

@@ -1,9 +1,8 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-
 import { Link } from "react-router-dom";
 import user from "../images/user.png";
 
@@ -11,36 +10,59 @@ const Menu = () => {
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies([]);
   const [username, setUsername] = useState("User");
+  const [loading, setLoading] = useState(true);  // Loading state
+  const [selectedMenu, setSelectedMenu] = useState(0);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+
   useEffect(() => {
     const verifyCookie = async () => {
       if (!cookies.token) {
-        window.location.href = "http://localhost:3000/login"; // Redirect to the external URL
+        redirectToLogin();
+        return;
       }
-      const { data } = await axios.post(
-        "http://localhost:3002",
-        // { data: 'example' },
-        {},
-        { withCredentials: true }
-      );
-      const { status, user } = data;
-      setUsername(user);
-      return status
-      ? toast(`Hello ${user}`, {
-          position: "top-right",
-        })
-        : (removeCookie("token"), window.location.href = "http://localhost:3000/login");
+
+      try {
+        const { data } = await axios.post(
+          "https://tradeease.onrender.com",
+          {},
+          { withCredentials: true }
+        );
+        const { status, user } = data;
+
+        if (status) {
+          setUsername(user);
+          toast(`Hello ${user}`, { position: "top-right" });
+        } else {
+          handleInvalidToken();
+        }
+      } catch (error) {
+        console.error("Verification failed:", error);
+        handleInvalidToken();
+      } finally {
+        setLoading(false);  // Stop loading
+      }
     };
+
     verifyCookie();
   }, [cookies, navigate, removeCookie]);
 
+  // Logout and redirect
   const Logout = () => {
     removeCookie("token");
-    window.location.href = "http://localhost:3000/signup"; // Redirect to the external URL
-   // navigate("/signup");
+    navigate("/signup");  // Internal route
   };
 
-  const [selectedMenu, setSelectedMenu] = useState(0);
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  // Redirect to login if token is invalid or missing
+  const redirectToLogin = () => {
+    removeCookie("token");
+    window.location.href = "https://comfy-khapse-9901c9.netlify.app/login";  // External redirect
+  };
+
+  // Handle invalid token from API response
+  const handleInvalidToken = () => {
+    toast.error("Session expired. Redirecting...");
+    redirectToLogin();
+  };
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
@@ -52,6 +74,9 @@ const Menu = () => {
 
   const menuClass = "menu";
   const activeMenuClass = "menu selected";
+
+  // Show loader while verifying token
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="menu-container">

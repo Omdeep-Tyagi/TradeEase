@@ -33,7 +33,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3002/signup",
+        "https://tradeease.onrender.com/signup",
         {
           ...inputValue,
         },
@@ -44,7 +44,7 @@ const Signup = () => {
         handleSuccess(message);
         setTimeout(() => {
          // navigate("http://localhost:3001/");//carefully check the path
-          window.location.href = "http://localhost:3001/"
+          window.location.href = "https://endearing-starlight-c25049.netlify.app/"
         }, 1000);
       } else {
         handleError(message);
