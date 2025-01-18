@@ -49,7 +49,7 @@ const Menu = () => {
   // Logout and redirect
   const Logout = () => {
     removeCookie("token");
-    navigate("/signup");  // Internal route
+    window.location.href = "https://comfy-khapse-9901c9.netlify.app";
   };
 
   // Redirect to login if token is invalid or missing
